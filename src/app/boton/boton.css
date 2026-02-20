@@ -1,0 +1,13 @@
+.btn-rojo {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-rojo:hover {
+    background-color: darkred;
+}
