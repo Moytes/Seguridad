@@ -1,4 +1,3 @@
-/* ===== Auth Container ===== */
 .auth-container {
     min-height: 100vh;
     display: flex;
@@ -10,12 +9,11 @@
 
 :host ::ng-deep .p-card {
     width: 100%;
-    max-width: 420px;
+    max-width: 480px;
     border-radius: 20px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 }
 
-/* ===== Auth Header ===== */
 .auth-header {
     text-align: center;
     margin-bottom: 2rem;
@@ -30,6 +28,11 @@
     align-items: center;
     justify-content: center;
     margin: 0 auto 1rem;
+    transition: transform 0.3s ease;
+}
+
+.auth-icon:hover {
+    transform: scale(1.08);
 }
 
 .auth-icon i {
@@ -49,17 +52,16 @@
     font-size: 0.9rem;
 }
 
-/* ===== Form ===== */
 .auth-form {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 1rem;
 }
 
 .field {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.4rem;
 }
 
 .field label {
@@ -80,7 +82,36 @@
     width: 100%;
 }
 
-/* ===== Footer ===== */
+:host ::ng-deep .p-datepicker {
+    width: 100%;
+}
+
+:host ::ng-deep .p-datepicker-input {
+    width: 100%;
+}
+
+:host ::ng-deep p-message {
+    margin-top: 0.15rem;
+}
+
+:host ::ng-deep .p-message {
+    font-size: 0.8rem;
+    padding: 0.25rem 0;
+}
+
+:host ::ng-deep .ng-invalid.ng-dirty input,
+:host ::ng-deep input.ng-invalid.ng-dirty {
+    border-color: #ef4444 !important;
+}
+
+:host ::ng-deep .ng-invalid.ng-dirty .p-password-input {
+    border-color: #ef4444 !important;
+}
+
+:host ::ng-deep .ng-invalid.ng-dirty .p-datepicker-input {
+    border-color: #ef4444 !important;
+}
+
 .auth-footer {
     text-align: center;
     margin-top: 1.5rem;
@@ -103,4 +134,14 @@
 
 .auth-footer a:hover {
     color: #4f46e5;
+}
+@media (max-width: 520px) {
+    .auth-container {
+        padding: 1rem;
+    }
+
+    :host ::ng-deep .p-card {
+        max-width: 100%;
+        border-radius: 14px;
+    }
 }

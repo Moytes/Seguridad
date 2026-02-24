@@ -1,24 +1,113 @@
-import { Component, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, signal, computed } from '@angular/core';
+import { ReactiveFormsModule, FormGroup, FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
 import { Password } from 'primeng/password';
 import { Card } from 'primeng/card';
+import { Message } from 'primeng/message';
+import { Toast } from 'primeng/toast';
+import { DatePicker } from 'primeng/datepicker';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-register',
-  imports: [FormsModule, RouterLink, Button, InputText, Password, Card],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterLink,
+    Button,
+    InputText,
+    Password,
+    Card,
+    Message,
+    Toast,
+    DatePicker,
+  ],
+  providers: [MessageService],
   templateUrl: './register.html',
   styleUrl: './register.css',
 })
 export class Register {
-  nombre = signal('');
-  email = signal('');
-  password = signal('');
-  confirmPassword = signal('');
+  maxDate = new Date();
+
+  registerForm = new FormGroup(
+    {
+      usuario: new FormControl('', [Validators.required, Validators.minLength(3)]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      nombreCompleto: new FormControl('', [Validators.required, Validators.minLength(3)]),
+      telefono: new FormControl('', [Validators.required, Validators.pattern(/^\d+$/), Validators.minLength(10)]),
+      direccion: new FormControl('', [Validators.required]),
+      fechaNacimiento: new FormControl<Date | null>(null, [Validators.required, this.mayorDeEdadValidator]),
+      password: new FormControl('', [
+        Validators.required,
+        Validators.minLength(10),
+        Validators.pattern(/^(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])/),
+      ]),
+      confirmPassword: new FormControl('', [Validators.required]),
+    },
+    { validators: this.passwordsMatchValidator }
+  );
+
+  submitted = signal(false);
+
+  constructor(private messageService: MessageService) {
+    this.maxDate = new Date();
+  }
+
+  passwordsMatchValidator(group: AbstractControl): ValidationErrors | null {
+    const password = group.get('password')?.value;
+    const confirmPassword = group.get('confirmPassword')?.value;
+    if (password && confirmPassword && password !== confirmPassword) {
+      return { passwordsMismatch: true };
+    }
+    return null;
+  }
+
+  mayorDeEdadValidator(control: AbstractControl): ValidationErrors | null {
+    const fecha = control.value;
+    if (!fecha) return null;
+    const hoy = new Date();
+    const nacimiento = new Date(fecha);
+    let edad = hoy.getFullYear() - nacimiento.getFullYear();
+    const mesDiff = hoy.getMonth() - nacimiento.getMonth();
+    if (mesDiff < 0 || (mesDiff === 0 && hoy.getDate() < nacimiento.getDate())) {
+      edad--;
+    }
+    return edad >= 18 ? null : { menorDeEdad: true };
+  }
+
+  get f() {
+    return this.registerForm.controls;
+  }
 
   onRegister() {
-    console.log('Register:', this.nombre(), this.email(), this.password());
+    this.submitted.set(true);
+
+    if (this.registerForm.invalid) {
+      Object.keys(this.registerForm.controls).forEach((key) => {
+        const control = this.registerForm.get(key);
+        control?.markAsTouched();
+        control?.markAsDirty();
+      });
+
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Formulario inválido',
+        detail: 'Por favor corrige los errores antes de continuar.',
+        life: 4000,
+      });
+      return;
+    }
+
+    this.messageService.add({
+      severity: 'success',
+      summary: '¡Registro exitoso!',
+      detail: 'Tu cuenta ha sido creada correctamente.',
+      life: 4000,
+    });
+
+    console.log('Register:', this.registerForm.value);
   }
 }
