@@ -4,8 +4,27 @@
 /* Importar estilos de PrimeIcons */
 @import 'primeicons/primeicons.css';
 
-/* You can add global styles to this file, and also import other style files */
+/* ===== CSS Variables ===== */
+:root {
+    --primary: #6366f1;
+    --primary-dark: #4f46e5;
+    --primary-light: #a78bfa;
+    --surface: #ffffff;
+    --surface-alt: #f4f6fb;
+    --text-primary: #1e1e2f;
+    --text-secondary: #6b7280;
+    --border: #e8e8ef;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.12);
+    --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
+/* ===== Reset ===== */
 * {
     margin: 0;
     padding: 0;
@@ -17,5 +36,37 @@ body {
     width: 100%;
     height: 100%;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background-color: #f5f5f5;
+    background-color: var(--surface-alt);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===== Smooth scrolling ===== */
+html {
+    scroll-behavior: smooth;
+}
+
+/* ===== Selection ===== */
+::selection {
+    background: var(--primary);
+    color: #fff;
+}
+
+/* ===== Scrollbar (webkit) ===== */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c4c4d0;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
 }

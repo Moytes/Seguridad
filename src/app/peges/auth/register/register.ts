@@ -37,12 +37,13 @@ export class Register {
       usuario: new FormControl('', [Validators.required, Validators.minLength(3)]),
       email: new FormControl('', [Validators.required, Validators.email]),
       nombreCompleto: new FormControl('', [Validators.required, Validators.minLength(3)]),
-      telefono: new FormControl('', [Validators.required, Validators.pattern(/^\d+$/), Validators.minLength(10)]),
+      telefono: new FormControl('', [Validators.required, Validators.pattern(/^\d+$/), Validators.minLength(10), Validators.maxLength(10)]),
       direccion: new FormControl('', [Validators.required]),
       fechaNacimiento: new FormControl<Date | null>(null, [Validators.required, this.mayorDeEdadValidator]),
       password: new FormControl('', [
         Validators.required,
         Validators.minLength(10),
+        Validators.maxLength(10),
         Validators.pattern(/^(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])/),
       ]),
       confirmPassword: new FormControl('', [Validators.required]),
@@ -80,6 +81,21 @@ export class Register {
 
   get f() {
     return this.registerForm.controls;
+  }
+
+  soloNumeros(event: KeyboardEvent): void {
+    const charCode = event.key;
+    if (!/^\d$/.test(charCode)) {
+      event.preventDefault();
+    }
+  }
+
+  onPegarTelefono(event: ClipboardEvent): void {
+    event.preventDefault();
+    const pastedText = event.clipboardData?.getData('text') || '';
+    const soloDigitos = pastedText.replace(/\D/g, '');
+    this.registerForm.get('telefono')?.setValue(soloDigitos);
+    this.registerForm.get('telefono')?.markAsTouched();
   }
 
   onRegister() {
