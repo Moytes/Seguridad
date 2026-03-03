@@ -1,4 +1,18 @@
 <div class="user-profile-container">
+
+    <!-- Suspended Banner -->
+    @if (accountSuspended) {
+    <div class="suspended-banner">
+        <i class="pi pi-exclamation-circle"></i>
+        <div class="suspended-info">
+            <strong>Cuenta Suspendida</strong>
+            <span>Tu cuenta se encuentra temporalmente inactiva.</span>
+        </div>
+        <p-button label="Reactivar" icon="pi pi-refresh" severity="warn" [outlined]="true" size="small"
+            (onClick)="reactivateAccount()" />
+    </div>
+    }
+
     <!-- Header Card -->
     <p-card styleClass="profile-header-card">
         <div class="profile-header">
@@ -7,6 +21,14 @@
                 <h2 class="profile-name">{{ user?.nombre }}</h2>
                 <p class="profile-username">&#64;{{ user?.usuario }}</p>
                 <p-tag [value]="user?.rol ?? ''" icon="pi pi-shield" severity="info" />
+            </div>
+            <div class="header-actions">
+                <p-button icon="pi pi-pencil" label="Editar Perfil" severity="primary" [outlined]="true" size="small"
+                    (onClick)="openEditDialog()" />
+                @if (!accountSuspended) {
+                <p-button icon="pi pi-ban" label="Suspender" severity="warn" [outlined]="true" size="small"
+                    (onClick)="suspendAccount()" />
+                }
             </div>
         </div>
     </p-card>
@@ -79,6 +101,89 @@
                     </span>
                 </div>
             </div>
+
+            <div class="detail-item">
+                <div class="detail-icon">
+                    <i class="pi pi-circle-fill" [ngClass]="accountSuspended ? 'status-inactive' : 'status-active'"></i>
+                </div>
+                <div class="detail-content">
+                    <span class="detail-label">Estado de la Cuenta</span>
+                    <span class="detail-value">
+                        <p-tag [value]="accountSuspended ? 'Inactiva' : 'Activa'"
+                            [severity]="accountSuspended ? 'warn' : 'success'"
+                            [icon]="accountSuspended ? 'pi pi-ban' : 'pi pi-check-circle'" />
+                    </span>
+                </div>
+            </div>
         </div>
     </p-card>
+
+    <!-- Edit Profile Dialog -->
+    <p-dialog [(visible)]="showEditDialog" header="Editar Perfil" [modal]="true" [draggable]="false" [resizable]="false"
+        styleClass="profile-edit-dialog" [style]="{ width: '520px' }">
+        <div class="edit-form">
+            <div class="edit-form-row">
+                <label for="edit-usuario">Usuario</label>
+                <input id="edit-usuario" pInputText [(ngModel)]="editData.usuario" placeholder="Nombre de usuario"
+                    class="edit-input" />
+            </div>
+
+            <div class="edit-form-row">
+                <label for="edit-email">Correo Electrónico</label>
+                <input id="edit-email" type="email" pInputText [(ngModel)]="editData.email" placeholder="tu@email.com"
+                    class="edit-input" />
+            </div>
+
+            <div class="edit-form-row">
+                <label for="edit-nombre">Nombre Completo</label>
+                <input id="edit-nombre" pInputText [(ngModel)]="editData.nombre" placeholder="Tu nombre completo"
+                    class="edit-input" />
+            </div>
+
+            <div class="edit-form-two">
+                <div class="edit-form-col">
+                    <label for="edit-telefono">Teléfono</label>
+                    <input id="edit-telefono" pInputText [(ngModel)]="editData.telefono" placeholder="Ej: 5512345678"
+                        (keypress)="soloNumeros($event)" (paste)="onPegarTelefono($event)" maxlength="10"
+                        class="edit-input" />
+                </div>
+                <div class="edit-form-col">
+                    <label for="edit-fecha">Fecha de Nacimiento</label>
+                    <p-datepicker id="edit-fecha" [(ngModel)]="editFechaNacimiento" [maxDate]="maxDate"
+                        dateFormat="dd/mm/yy" placeholder="dd/mm/aaaa" [showIcon]="true" styleClass="w-full"
+                        inputStyleClass="w-full" />
+                </div>
+            </div>
+
+            <div class="edit-form-row">
+                <label for="edit-direccion">Dirección</label>
+                <input id="edit-direccion" pInputText [(ngModel)]="editData.direccion" placeholder="Tu dirección"
+                    class="edit-input" />
+            </div>
+
+            <div class="edit-form-row">
+                <label for="edit-password">Contraseña</label>
+                <p-password id="edit-password" [(ngModel)]="editPassword" placeholder="Exactamente 10 caracteres"
+                    [toggleMask]="true" [maxLength]="10" styleClass="w-full" inputStyleClass="w-full" />
+            </div>
+
+            <div class="edit-form-row">
+                <label for="edit-confirmPassword">Confirmar Contraseña</label>
+                <p-password id="edit-confirmPassword" [(ngModel)]="editConfirmPassword"
+                    placeholder="Repite tu contraseña" [toggleMask]="true" [feedback]="false" styleClass="w-full"
+                    inputStyleClass="w-full" />
+            </div>
+        </div>
+
+        <ng-template #footer>
+            <div class="edit-dialog-footer">
+                <p-button label="Cancelar" icon="pi pi-times" severity="secondary" [text]="true"
+                    (onClick)="showEditDialog = false" />
+                <p-button label="Guardar Cambios" icon="pi pi-check" severity="primary" (onClick)="saveProfile()" />
+            </div>
+        </ng-template>
+    </p-dialog>
+
+    <!-- Confirm Dialog -->
+    <p-confirmDialog />
 </div>

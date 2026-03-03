@@ -7,12 +7,60 @@
     gap: 1.5rem;
 }
 
+/* ===== Suspended Banner ===== */
+.suspended-banner {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border: 1px solid #f59e0b;
+    border-radius: 14px;
+    padding: 1rem 1.5rem;
+    animation: bannerSlideIn 0.35s ease-out;
+}
+
+@keyframes bannerSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.suspended-banner>i {
+    font-size: 1.5rem;
+    color: #d97706;
+    flex-shrink: 0;
+}
+
+.suspended-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 0.15rem;
+}
+
+.suspended-info strong {
+    font-size: 0.95rem;
+    color: #92400e;
+}
+
+.suspended-info span {
+    font-size: 0.82rem;
+    color: #a16207;
+}
+
 /* ===== Header Card ===== */
 .profile-header {
     display: flex;
     align-items: center;
     gap: 1.5rem;
     padding: 0.5rem 0;
+    flex-wrap: wrap;
 }
 
 :host ::ng-deep .profile-avatar {
@@ -29,19 +77,38 @@
     display: flex;
     flex-direction: column;
     gap: 0.35rem;
+    flex: 1;
 }
 
 .profile-name {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #4338ca;
+    color: #6d28d9;
     margin: 0;
 }
 
 .profile-username {
     font-size: 0.95rem;
-    color: #6b7280;
+    color: #8b8fa8;
     margin: 0 0 0.25rem;
+}
+
+/* ===== Header Action Buttons ===== */
+.header-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
+/* ===== Status Indicator ===== */
+.status-active {
+    color: #059669 !important;
+    font-size: 0.65rem !important;
+}
+
+.status-inactive {
+    color: #d97706 !important;
+    font-size: 0.65rem !important;
 }
 
 /* ===== Details Grid ===== */
@@ -62,7 +129,7 @@
     width: 42px;
     height: 42px;
     border-radius: 12px;
-    background: #f0f0ff;
+    background: linear-gradient(135deg, #ede9fe, #f3e8ff);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -71,7 +138,7 @@
 
 .detail-icon i {
     font-size: 1.1rem;
-    color: #6366f1;
+    color: #7c3aed;
 }
 
 .detail-content {
@@ -83,7 +150,7 @@
 .detail-label {
     font-size: 0.78rem;
     font-weight: 600;
-    color: #9ca3af;
+    color: #a5b4c8;
     text-transform: uppercase;
     letter-spacing: 0.04em;
 }
@@ -91,22 +158,106 @@
 .detail-value {
     font-size: 0.95rem;
     font-weight: 500;
-    color: #4338ca;
+    color: #6d28d9;
 }
 
 /* ===== PrimeNG Card Overrides ===== */
 :host ::ng-deep .profile-header-card .p-card {
     border-radius: 16px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.08);
+    border: 1px solid #e9e5f5;
 }
 
 :host ::ng-deep .profile-details-card .p-card {
     border-radius: 16px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.08);
+    border: 1px solid #e9e5f5;
+}
+
+/* ===== Edit Dialog Styles ===== */
+:host ::ng-deep .profile-edit-dialog .p-dialog {
+    border-radius: 20px;
+    box-shadow: 0 24px 64px rgba(139, 92, 246, 0.18);
+    border: 1px solid #e9e5f5;
+}
+
+:host ::ng-deep .profile-edit-dialog .p-dialog-header {
+    border-bottom: 1px solid #f1eef9;
+    padding: 1.25rem 1.5rem;
+    background: linear-gradient(135deg, #fafaff, #f5f3ff);
+}
+
+:host ::ng-deep .profile-edit-dialog .p-dialog-title {
+    font-weight: 800;
+    color: #6d28d9;
+    font-size: 1.15rem;
+}
+
+:host ::ng-deep .profile-edit-dialog .p-dialog-content {
+    padding: 1.5rem;
+}
+
+:host ::ng-deep .profile-edit-dialog .p-dialog-footer {
+    border-top: 1px solid #f1eef9;
+    background: #fafaff;
+    padding: 1rem 1.5rem;
+}
+
+.edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.edit-form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.edit-form-two {
+    display: flex;
+    gap: 1rem;
+}
+
+.edit-form-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.edit-form label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #8b8fa8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.edit-input {
+    width: 100%;
+}
+
+:host ::ng-deep .edit-form .p-inputtext {
+    border-radius: 10px;
+    border-color: #e0d4fc;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+:host ::ng-deep .edit-form .p-inputtext:focus {
+    border-color: #a78bfa;
+    box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.2);
+}
+
+.edit-dialog-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
 }
 
 /* ===== Responsive ===== */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
     .profile-header {
         flex-direction: column;
         text-align: center;
@@ -114,6 +265,11 @@
 
     .profile-header-info {
         align-items: center;
+    }
+
+    .header-actions {
+        width: 100%;
+        justify-content: center;
     }
 
     :host ::ng-deep .profile-avatar {
@@ -124,5 +280,49 @@
 
     .profile-name {
         font-size: 1.25rem;
+    }
+
+    .edit-form-two {
+        flex-direction: column;
+    }
+
+    .suspended-banner {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.75rem;
+    }
+
+    :host ::ng-deep .profile-edit-dialog .p-dialog {
+        width: 95vw !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .user-profile-container {
+        gap: 1rem;
+    }
+
+    .header-actions {
+        flex-direction: column;
+    }
+
+    :host ::ng-deep .profile-header-card .p-card,
+    :host ::ng-deep .profile-details-card .p-card {
+        border-radius: 12px;
+    }
+
+    .detail-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+    }
+
+    .detail-icon i {
+        font-size: 0.95rem;
+    }
+
+    :host ::ng-deep .profile-edit-dialog .p-dialog {
+        width: 98vw !important;
+        border-radius: 14px !important;
     }
 }
